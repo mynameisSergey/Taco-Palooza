@@ -1,16 +1,16 @@
-package sia.taco_cloud;
+package sia.taco_cloud.controller;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
+import sia.taco_cloud.Ingredient;
 import sia.taco_cloud.Ingredient.Type;
+import sia.taco_cloud.Taco;
+import sia.taco_cloud.TacoOrder;
 
 
 @Slf4j
@@ -18,9 +18,12 @@ import sia.taco_cloud.Ingredient.Type;
 @RequestMapping("/design")
 @SessionAttributes("tacoOrder")
 public class DesignTacoController {
-
+//контроллер управляет состоянием приложения и предоставляет пользователю интерфейс для создания тако с использованием
+// различных ингредиентов
     @ModelAttribute
-    public void addIngredientsToModel(Model model) {
+    public void addIngredientsToModel(Model model) { /* Model – это объект,
+        в котором данные пересылаются между контроллером и любым представлением,
+        ответственным за преобразование этих данных в разметку HTML*/
         List<Ingredient> ingredients = Arrays.asList(
                 new Ingredient("FLTO", "Flour Tortilla", Type.WRAP),
                 new Ingredient("COTO", "Corn Tortilla", Type.WRAP),
@@ -61,5 +64,13 @@ public class DesignTacoController {
                 .stream()
                 .filter(x -> x.getType().equals(type))
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping
+    public String processTaco(Taco taco,
+                              @ModelAttribute TacoOrder tacoOrder) {
+        tacoOrder.addTaco(taco);
+        log.info("Processing taco: {}", taco);
+        return "redirect:/orders/current"; //перенаправляет пользователя на другую страницу для оформления заказа
     }
 }
