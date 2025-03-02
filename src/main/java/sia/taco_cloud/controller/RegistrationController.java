@@ -10,7 +10,7 @@ import sia.taco_cloud.repository.UserRepository;
 
 @Controller
 @RequestMapping("/register")
-public class RegistrationController {
+public class RegistrationController { //Контроллер регистрации нового пользователя
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
 
