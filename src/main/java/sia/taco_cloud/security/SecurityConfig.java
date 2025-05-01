@@ -11,8 +11,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import sia.taco_cloud.model.User;
 import sia.taco_cloud.repository.UserRepository;
 
-import static org.springframework.security.authorization.AuthorityReactiveAuthorizationManager.hasRole;
-
 @Configuration
 @EnableWebSecurity
 
@@ -33,15 +31,15 @@ public class SecurityConfig {
     }
 
 
-        @Bean
-        public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
-            return http
-                    .authorizeRequests()
-                    .antMatchers("/design", "/orders").access("hasRole(‘USER’)")
-                    .antMatchers("/", "/**").access("permitAll()")
-                    .and()
-                    .build();
-        }
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+                .authorizeRequests()
+                .antMatchers("/design", "/orders").hasRole("USER")
+                .antMatchers("/", "/**").permitAll()
+                .and()
+                .build();
     }
-    }
+}
+
 
