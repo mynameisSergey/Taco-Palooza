@@ -21,18 +21,15 @@ public class OrderController {
 
     private final OrderRepository orderRepo;
 
-
     public OrderController(OrderRepository orderRepo) {
         this.orderRepo = orderRepo;
     }
-
 
     @GetMapping("/current")
     public String orderForm(Model model) {
         model.addAttribute("tacoOrder", new TacoOrder());
         return "orderForm";
     }
-
 
     @PostMapping
     public String processOrder(@Valid TacoOrder order, Errors errors,
